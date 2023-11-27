@@ -13,8 +13,17 @@ export const loginFormSchema = yupResolver(
         .trim()
         .required('Password is required')
         .matches(/^[\x00-\x7F]+$/, 'Password format is not valid.'),
-
-      name: yup.string().required('name is required'),
+    })
+    .required(),
+);
+export const forgotPassSchema = yupResolver(
+  yup
+    .object({
+      email: yup
+        .string()
+        .trim()
+        .required('Password is required')
+        .matches(/^[\x00-\x7F]+$/, 'Password format is not valid.'),
     })
     .required(),
 );

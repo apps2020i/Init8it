@@ -2,6 +2,9 @@ export type ThemeColors = {
   primary: string;
   toastError: string;
   toastSuccess: string;
+  lightGray: string;
+  darkBlue: '#3498db';
+  whiteSmoke: string;
   white: string;
   black: string;
   gray: string;

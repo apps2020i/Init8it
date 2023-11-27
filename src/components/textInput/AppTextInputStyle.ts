@@ -19,6 +19,7 @@ export const useAppTextInputStyle = ({leftIcon, editable = true}: props) => {
         ...SHADOW.shadow0,
         backgroundColor: DEFAULT_COLORS.white,
         opacity: !editable ? 0.5 : 1,
+        justifyContent: 'center',
       },
       inputContainer: {
         flexDirection: 'row',
@@ -47,7 +48,7 @@ export const useAppTextInputStyle = ({leftIcon, editable = true}: props) => {
         borderColor: colors.toastError,
       },
       textInputStyles: {
-        color: colors.primary,
+        color: colors.gray,
         padding: 0,
         paddingLeft: leftIcon ? 30 : 0,
       },

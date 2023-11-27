@@ -15,11 +15,12 @@ import {Database} from '../../../../Database';
 import {navigate} from '../../../navigation/rootNavigation';
 import {useRoute} from '@react-navigation/native';
 import AppTextInput from '../../../components/textInput/AppTextInput';
+import TextComponent from './DetailsComponents/TextComponent';
 
 const Details = () => {
   const route = useRoute();
   const details = route?.params?.questionList;
-  const questions = details;
+  const questions = details?.Questions;
 
   console.log('questions===', questions);
 
@@ -27,34 +28,97 @@ const Details = () => {
   //   const styles = useLoginStyle();
 
   const renderItem = ({item}) => {
-    console.log('detail items', item);
-    return <Text>{item?.QuestionsID}</Text>;
-    // switch (item?.ControlName) {
-    //   case 'TextArea':
-    //     return <AppTextInput />;
-    // }
-    // return (
-    //   <View
-    //     style={{
-    //       marginBottom: 10,
-    //       backgroundColor: '#EEEEEE',
-    //       height: 60,
-    //       justifyContent: 'center',
-    //     }}>
-    //     <Text style={{marginLeft: 20, fontSize: 16, fontWeight: 'bold'}}>
-    //       Helo details
-    //     </Text>
-    //   </View>
-    // );
+    console.log('renderitemsare', item?.ControlID);
+    switch (item.ControlID) {
+      case 1:
+        return (
+          <TextComponent
+            QuestionsCode={item?.QuestionsCode}
+            QuestionsText={item?.QuestionsText}
+            QuestionLabel={item?.QuestionLabel}
+            QuestionHeaderDescription={item?.QuestionHeaderDescription}
+          />
+        );
+      case 2:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+
+      case 3:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+
+      case 4:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 5:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 6:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 7:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 8:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 9:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 10:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 11:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 12:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 13:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+      case 14:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+
+      case 15:
+        return (
+          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
+        );
+
+      // Add cases for other control types as needed
+      default:
+        return null;
+    }
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'red'}}>
-      <View style={{height: 120}} />
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#ffffff',
+        borderWidth: 2,
+        margin: 5,
+        paddingLeft: 30,
+        marginTop: 150,
+        borderColor: 'blue',
+      }}>
       <FlatList
-        keyExtractor={item => item?.id}
         data={questions}
-        contentContainerStyle={{paddingBottom: 30}}
         renderItem={renderItem}
+        keyExtractor={item => item.ControlID.toString()}
       />
     </View>
 

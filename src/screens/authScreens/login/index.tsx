@@ -1,30 +1,34 @@
-import React from 'react';
-import {View} from 'react-native';
+import React, {useRef} from 'react';
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  Animated,
+  Easing,
+} from 'react-native';
 import AppButton from '../../../components/button/AppButton';
 import AppTextInput from '../../../components/textInput/AppTextInput';
 import {loginFormSchema} from '../../../helpers/yupHelper';
 import {Controller, useForm} from 'react-hook-form';
 import {useLoginStyle} from './styles';
-import {useDispatch} from 'react-redux';
 import {useLoginMutation} from '../../../services/authService';
-import {setUser} from '../../../redux/auth/authSlice';
 import {ROUTES} from '../../../constants/routeConstant';
-import {replace} from '../../../navigation/rootNavigation';
+import {navigate, replace} from '../../../navigation/rootNavigation';
+
+const {Value, timing} = Animated;
 
 const Login = () => {
-  const [login, {isLoading, isError, data, error}] = useLoginMutation(); // Call the useLoginMutation hook
-  const dispatch = useDispatch();
+  const [login] = useLoginMutation();
   const styles = useLoginStyle();
-  const {handleSubmit, control, getValues, reset, setValue, clearErrors} =
-    useForm<any, any>({
-      resolver: loginFormSchema,
-      mode: 'onBlur',
-      defaultValues: {
-        email: '',
-        password: '',
-        name: '',
-      },
-    });
+  const {handleSubmit, control, getValues} = useForm<any, any>({
+    resolver: loginFormSchema,
+    mode: 'onBlur',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
   const onLogin = async () => {
     const {email, password} = getValues();
@@ -34,71 +38,85 @@ const Login = () => {
       login({
         username: 'kminchelle',
         password: '0lelplR',
-      }).then(res => {
+      }).then(() => {
         replace(ROUTES.app);
       });
     }
   };
+  const translateY = useRef(new Value(0)).current;
+
+  const animateForm = (value: number, duration: number) => {
+    timing(translateY, {
+      toValue: value,
+      useNativeDriver: false,
+      duration,
+      easing: Easing.inOut(Easing.ease),
+    }).start();
+  };
 
   return (
-    <View style={styles.container}>
-      <Controller
-        control={control}
-        name="name"
-        render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-          <AppTextInput
-            style={{paddingVertical: 8}}
-            value={value}
-            placeholder="Enter Name"
-            onChangeText={onChange}
-            onBlur={onBlur}
-            error={error?.message}
-            autoCorrect={false}
-            textContentType="username"
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="email"
-        render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-          <AppTextInput
-            style={{paddingVertical: 8}}
-            value={value}
-            placeholder="Enter Email"
-            onChangeText={onChange}
-            onBlur={onBlur}
-            error={error?.message}
-            autoCorrect={false}
-            textContentType="username"
-          />
-        )}
-      />
-
-      <Controller
-        control={control}
-        name="password"
-        render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-          <AppTextInput
-            style={{paddingVertical: 8, marginTop: 22}}
-            value={value.trim()}
-            placeholder="Enter Password"
-            type={'password'}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            error={error?.message}
-            autoCorrect={false}
-            textContentType="password"
-          />
-        )}
-      />
-      <AppButton
-        style={{backgroundColor: 'red', alignSelf: 'center', marginTop: 32}}
-        title="Press Me"
-        onPress={handleSubmit(onLogin)}
-        labelStyle={{}}
-      />
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <View style={styles.logoContainer}>
+        <Text style={styles.logo}>This side Logo</Text>
+      </View>
+      <Animated.View
+        style={[styles.formContainer, {transform: [{translateY}]}]}>
+        <Text style={styles.title}>Login</Text>
+        <Controller
+          control={control}
+          name="email"
+          render={({field: {onChange, value}, fieldState: {error}}) => (
+            <AppTextInput
+              style={styles.input}
+              errorTextStyle={styles.errorTextStyle}
+              placeholderTextColor={'#aaa'}
+              value={value}
+              placeholder="Email"
+              onChangeText={onChange}
+              onBlur={() => animateForm(0, 300)}
+              onFocus={() => animateForm(-100, 300)}
+              error={error?.message}
+              autoCorrect={false}
+              textContentType="emailAddress"
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="password"
+          render={({field: {onChange, value}, fieldState: {error}}) => (
+            <AppTextInput
+              style={styles.input}
+              errorTextStyle={styles.errorTextStyle}
+              placeholderTextColor={'#aaa'}
+              value={value}
+              placeholder="Password"
+              onChangeText={onChange}
+              onBlur={() => animateForm(0, 300)}
+              onFocus={() => animateForm(-100, 300)}
+              error={error?.message}
+              autoCorrect={false}
+              textContentType="password"
+            />
+          )}
+        />
+        <AppButton
+          style={styles.loginButton}
+          title="Login"
+          onPress={handleSubmit(onLogin)}
+          labelStyle={styles.lableStyle}
+        />
+        <AppButton
+          style={styles.loginButton}
+          title="Forgot Password"
+          onPress={() => navigate('ForgotPassword')}
+          labelStyle={styles.lableStyle}
+        />
+      </Animated.View>
+    </KeyboardAvoidingView>
   );
 };
+
 export default Login;

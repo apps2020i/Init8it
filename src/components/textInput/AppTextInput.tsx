@@ -27,6 +27,7 @@ interface props extends TextInputProps {
   autoCapitalize?: 'characters' | 'words' | 'sentences' | 'none';
   leftIconStyle?: StyleProp<ViewStyle>;
   rightIconStyle?: StyleProp<ViewStyle>;
+  errorTextStyle?: StyleProp<ViewStyle>;
   inputRef?: any;
   floatingLabel?: boolean;
   floatingLabelStyle?: StyleProp<TextStyle>;
@@ -52,6 +53,7 @@ const AppTextInput = ({
   autoCapitalize = 'none',
   leftIconStyle,
   rightIconStyle,
+  errorTextStyle,
   onFocus,
   inputRef,
   floatingLabel,
@@ -184,7 +186,9 @@ const AppTextInput = ({
           </Pressable>
         ) : null}
       </View>
-      {error && <AppText style={styles.error}>{error}</AppText>}
+      {error && (
+        <AppText style={(styles.error, errorTextStyle)}>{error}</AppText>
+      )}
     </>
   );
 };

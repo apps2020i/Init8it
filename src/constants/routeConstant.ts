@@ -4,6 +4,7 @@ export interface RouteInterface {
 
 export const ROUTES = {
   login: 'Login',
+  forgotPassword: 'ForgotPassword',
   home: 'Home',
   details: 'Details',
   splash: 'Splash',

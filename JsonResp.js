@@ -1,4 +1,4 @@
-[
+const Data = [
   {
     SchemeID: 4,
     SchemeName: 'UKTSA',
@@ -8766,3 +8766,4 @@
     ],
   },
 ];
+export default Data;

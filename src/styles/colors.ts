@@ -4,6 +4,9 @@ const LIGHT_COLORS = {
   primary: '#3683BC',
   toastError: 'rgba(246, 119, 91, 0.9)',
   toastSuccess: 'rgba(27, 227, 119, 0.9)',
+  darkBlue: '#3498db',
+  whiteSmoke: '#f5f5f5',
+  lightGray: '#aaa',
   white: '#FFFFFF',
   black: '#000000',
   gray: '#5c5b5b',
@@ -19,6 +22,9 @@ const DARK_COLORS = {
   lightOrange: '#F6775B',
   toastError: 'rgba(246, 119, 91, 0.9)',
   toastSuccess: 'rgba(27, 227, 119, 0.9)',
+  darkBlue: '#3498db',
+  lightGray: '#aaa',
+  whiteSmoke: '#f5f5f5',
   lightBlue: '#ADD8E6',
 };
 

@@ -11,11 +11,13 @@ import {navigate} from '../../../navigation/rootNavigation';
 const Home = () => {
   const dispatch = useDispatch();
 
-  const [isCallApi, setisCallApi] = useState(true);
+  // const [isCallApi, setisCallApi] = useState(true);
   const [fetchBusList] = useLazyFetchBusinessListQuery();
   const reduxBusinessList = useSelector(
     (state: {apps: appState}) => state.apps.businessList,
   );
+  const sectionList = reduxBusinessList[0]?.Sections;
+
   useEffect(() => {
     const fetchData = async () => {
       await apisLocalMathods();
@@ -31,32 +33,26 @@ const Home = () => {
     await fetchBusList();
   };
   const apisLocalMathods = async () => {
-    doIfOnline(
-      async () => {
-        await callLocalDatas();
-      },
-      async () => {
-        if (isCallApi) {
-          await callAllApis();
-        } else {
-          await callLocalDatas();
-        }
-      },
-    );
+    await callAllApis();
+    // doIfOnline(
+    //   async () => {
+    //     await callLocalDatas();
+    //   },
+    //   async () => {
+    //     await callAllApis();
+    //     await callLocalDatas();
+    //   },
+    // );
   };
 
   const renderItem = ({item}) => {
-    console.log('itemsare', item);
     const questions = item?.Questions;
-    console.log('questfrohomeis', questions.length);
 
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log('qonpresis', questions);
-          console.log('itemsare', item);
           navigate('Details', {
-            questionList: item?.Questions,
+            questionList: item,
           });
         }}
         style={{
@@ -101,7 +97,7 @@ const Home = () => {
         <Text style={{fontSize: 22, color: 'white'}}>HIT</Text>
       </TouchableOpacity>
       <FlatList
-        data={reduxBusinessList}
+        data={sectionList}
         renderItem={renderItem}
         keyExtractor={item => item.name}
       />

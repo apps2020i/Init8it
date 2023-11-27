@@ -6,7 +6,7 @@ import {ROUTES} from '../constants/routeConstant';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {useTheme} from '../hooks';
 import {Platform, StatusBar} from 'react-native';
-import Login from '../screens/authScreens/login';
+import Login from '../screens/authScreens/Login';
 import {useDispatch} from 'react-redux';
 import Home from '../screens/appScreens/Home';
 import Splash from '../screens/Splash';

@@ -25,8 +25,8 @@ const appSlice = createSlice({
         new Set(Database.flatMap(item => Object.keys(item))),
       );
 
-      createTable('businessList', dynamicColumns);
-      insertData('businessList', action?.payload);
+      // createTable('businessList', dynamicColumns);
+      // insertData('businessList', action?.payload);
       state.businessList = action.payload;
     },
   },
@@ -41,8 +41,8 @@ const appSlice = createSlice({
           new Set(Database.flatMap(item => Object.keys(item))),
         );
 
-        createTable('businessList', dynamicColumns);
-        insertData('businessList', Database);
+        // createTable('businessList', dynamicColumns);
+        // insertData('businessList', Database);
 
         state.businessList = Database;
       },
