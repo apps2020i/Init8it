@@ -1,229 +1,106 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import Checkbox from '../../../../Checkbox';
-import {Picker} from '@react-native-picker/picker';
-import {useLoginStyle} from './styles';
-import {Database} from '../../../../Database';
-import {navigate} from '../../../navigation/rootNavigation';
+import React, {useEffect, useState} from 'react';
+import {View, FlatList} from 'react-native';
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import validationSchema from './DetailsComponents/validationSchema';
+import RenderItems from './DetailsComponents/RenderItems';
+import Header from '../../../components/header/Header';
 import {useRoute} from '@react-navigation/native';
-import AppTextInput from '../../../components/textInput/AppTextInput';
-import TextComponent from './DetailsComponents/TextComponent';
+import {DataModel} from './DataModal';
+import {useDetailsStyle} from './styles';
+import AppButton from '../../../components/button/AppButton';
+import {useDispatch} from 'react-redux';
+import {setBusinessList} from '../../../redux/app/appSlice';
 
-const Details = () => {
+interface DetailsProps {}
+
+const Details: React.FC<DetailsProps> = () => {
+  const dispatch = useDispatch();
+
+  const styles = useDetailsStyle();
   const route = useRoute();
-  const details = route?.params?.questionList;
-  const questions = details?.Questions;
+  const details: DataModel = route?.params?.questionList;
+  const question = details?.Questions;
 
-  console.log('questions===', questions);
+  const [questions, setQuestions] = useState(question);
 
-  //   return <View style={{flex: 1, backgroundColor: 'green'}} />;
-  //   const styles = useLoginStyle();
+  const handleTextInputChange = async (text: string, index: number) => {
+    setQuestions((prevQuestions: any[]) =>
+      prevQuestions.map((question, i) =>
+        i === index
+          ? {...question, Answer: text} // Update the specific key
+          : question,
+      ),
+    );
 
-  const renderItem = ({item}) => {
-    console.log('renderitemsare', item?.ControlID);
-    switch (item.ControlID) {
-      case 1:
-        return (
-          <TextComponent
-            QuestionsCode={item?.QuestionsCode}
-            QuestionsText={item?.QuestionsText}
-            QuestionLabel={item?.QuestionLabel}
-            QuestionHeaderDescription={item?.QuestionHeaderDescription}
-          />
-        );
-      case 2:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-
-      case 3:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-
-      case 4:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 5:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 6:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 7:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 8:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 9:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 10:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 11:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 12:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 13:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-      case 14:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-
-      case 15:
-        return (
-          <TextComponent qCode={'Q1'} QuestionsText={'Space for normal text'} />
-        );
-
-      // Add cases for other control types as needed
-      default:
-        return null;
-    }
+    console.log('question is updateing', questions);
   };
+
+  const handleTimeChange = (time: Date, index: number) => {
+    const updatedFormValues = [...formValues];
+    updatedFormValues[index].time = time;
+    // setFormValues(updatedFormValues);
+  };
+
+  const handleDateChange = (date: Date, index: number) => {
+    const updatedFormValues = [...formValues];
+    updatedFormValues[index].date = date;
+    setFormValues(updatedFormValues);
+  };
+
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    formState: {},
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      answers: questions.map(item => {
+        return {
+          answer: item.Answer,
+          QuestionsID: item.QuestionsID,
+        };
+      }),
+    },
+  });
+
+  const onSubmit = () => {
+    const {answers} = getValues();
+    console.log('answersare', answers);
+    dispatch(setBusinessList(answers));
+  };
+  const renderItem = ({item, index}: {item: any; index: number}) => (
+    <RenderItems
+      // onTextInputChange={value => handleTextInputChange(value, index)}
+      // onDateChange={dateString => handleDateChange(dateString, index)}
+      // onTimeChange={timeString => handleTimeChange(timeString, index)}
+      index={index}
+      item={item}
+      control={control}
+    />
+  );
+
+  const renderSeparator = () => <View style={styles.seprator} />;
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#ffffff',
-        borderWidth: 2,
-        margin: 5,
-        paddingLeft: 30,
-        marginTop: 150,
-        borderColor: 'blue',
-      }}>
+    <View style={styles.container}>
+      <Header title="This space for header" />
       <FlatList
+        contentContainerStyle={styles.contentCont}
         data={questions}
         renderItem={renderItem}
         keyExtractor={item => item.ControlID.toString()}
+        ItemSeparatorComponent={renderSeparator}
+      />
+      <AppButton
+        style={styles.loginButton}
+        title="Save Details"
+        onPress={handleSubmit(onSubmit)}
+        labelStyle={styles.lableStyle}
       />
     </View>
-
-    // <View style={styles}>
-    //   {testingData.map((requirement, index) => {
-    //     switch (requirement.type) {
-    //       case 'text':
-    //         return (
-    //           <Text key={index} style={styles.text}>
-    //             {requirement.value}
-    //           </Text>
-    //         );
-    //       case 'textInput':
-    //         return (
-    //           <TextInput
-    //             key={index}
-    //             style={styles.textInput}
-    //             placeholder={requirement.placeholder}
-    //           />
-    //         );
-    //       case 'dropdown':
-    //         return (
-    //           <Picker
-    //             key={index}
-    //             // style={pickerSelectStyles}
-    //             items={requirement?.options?.map(option => ({
-    //               label: option,
-    //               value: option,
-    //             }))}
-    //             onValueChange={value => console.log(value)}
-    //           />
-    //         );
-    //       case 'image':
-    //         return (
-    //           <Image
-    //             key={index}
-    //             style={styles.image}
-    //             source={requirement.source}
-    //           />
-    //         );
-    //       case 'checkbox':
-    //         return (
-    //           <Checkbox
-    //             key={index}
-    //             style={styles.checkbox}
-    //             onChange={() => {}}
-    //             label={requirement.label}
-    //           />
-    //         );
-    //       default:
-    //         return null;
-    //     }
-    //   })}
-    // </View>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     padding: 16,
-//   },
-//   text: {
-//     fontSize: 16,
-//     marginBottom: 8,
-//   },
-//   textInput: {
-//     width: '100%',
-//     height: 40,
-//     borderWidth: 1,
-//     borderColor: 'gray',
-//     marginBottom: 8,
-//     paddingHorizontal: 8,
-//   },
-//   image: {
-//     width: 200,
-//     height: 200,
-//     marginBottom: 8,
-//   },
-//   checkbox: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginBottom: 8,
-//   },
-// });
-
-// const pickerSelectStyles = StyleSheet.create({
-//   inputIOS: {
-//     width: '100%',
-//     height: 40,
-//     borderWidth: 1,
-//     borderColor: 'gray',
-//     marginBottom: 8,
-//     paddingHorizontal: 8,
-//   },
-//   inputAndroid: {
-//     width: '100%',
-//     height: 40,
-//     borderWidth: 1,
-//     borderColor: 'gray',
-//     marginBottom: 8,
-//     paddingHorizontal: 8,
-//   },
-// });
 
 export default Details;

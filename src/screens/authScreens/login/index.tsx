@@ -98,7 +98,7 @@ const Login = () => {
               onFocus={() => animateForm(-100, 300)}
               error={error?.message}
               autoCorrect={false}
-              textContentType="password"
+              type="password"
             />
           )}
         />

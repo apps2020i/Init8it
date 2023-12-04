@@ -45,8 +45,8 @@ const Routes = () => {
         <Stack.Navigator
           screenOptions={{headerShown: false}}
           initialRouteName={ROUTES.splash}>
-          <Stack.Screen name={ROUTES.splash} component={Splash} />
-          <Stack.Screen name={ROUTES.auth} component={AuthNavigation} />
+          {/* <Stack.Screen name={ROUTES.splash} component={Splash} />
+          <Stack.Screen name={ROUTES.auth} component={AuthNavigation} /> */}
           <Stack.Screen name={ROUTES.app} component={AppNavigation} />
         </Stack.Navigator>
       </NavigationContainer>

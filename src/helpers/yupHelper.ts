@@ -27,3 +27,10 @@ export const forgotPassSchema = yupResolver(
     })
     .required(),
 );
+
+export const detailSchema = yup.object().shape({
+  QuestionsID: yup
+    .array()
+    .of(yup.string().trim().required('Please insert something!'))
+    .min(1, 'At least one input is required'),
+});

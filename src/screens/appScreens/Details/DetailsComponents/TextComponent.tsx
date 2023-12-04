@@ -1,47 +1,40 @@
 import React from 'react';
-import {View, Text, TextInputProps, StyleSheet} from 'react-native';
+import {View, Text, TextInputProps} from 'react-native';
 import HTML from 'react-native-render-html';
+import AppText from '../../../../components/text/AppText';
+import {useTextComponentStyle} from './TextComponentStyle';
 
 interface TextComponentProps extends TextInputProps {
-  QuestionsCode: string;
-  QuestionsText: string;
-  QuestionLabel: string;
-  QuestionHeaderDescription: string;
+  item: object;
 }
-
-const TextComponent: React.FC<TextComponentProps> = ({
-  QuestionsCode,
-  QuestionsText,
-  QuestionLabel,
-  QuestionHeaderDescription,
-}) => {
-  console.log('qtestshowiong', QuestionsText);
+const TextComponent: React.FC<TextComponentProps> = ({item}) => {
+  const styles = useTextComponentStyle();
+  console.log('qtestshowiong', item);
+  const qCode = item?.QuestionsCode;
+  const qText = item?.QuestionsText;
+  const qLabel = item?.QuestionLabel;
+  const qHeaderDesc = item?.QuestionHeaderDescription;
+  const qMandotry = item?.QuestionsMandatory;
   return (
     <View style={styles.controlContainer}>
-      {!!QuestionsCode && (
-        <Text style={styles.text}>{`${QuestionsCode} - `}` </Text>
+      <View style={styles.topRowView}>
+        {!!qCode && <AppText style={styles.qCode}>{`${qCode} - `}</AppText>}
+        {!!qText && (
+          <Text style={styles.controlContainer}>
+            <Text style={styles.qText}>{qText}</Text>
+            {!!qMandotry && <AppText style={styles.star}>*</AppText>}
+          </Text>
+        )}
+      </View>
+      {!!qLabel && (
+        <Text style={styles.bottomMargin}>
+          <Text style={styles.qLabel}>{qLabel}</Text>
+          {!!qMandotry && <AppText style={styles.star}>*</AppText>}
+        </Text>
       )}
-      {!!QuestionsText && <Text style={styles.text}>{QuestionsText}</Text>}
-      {QuestionLabel && <Text style={styles.text}>{QuestionLabel}</Text>}
-
-      {!!QuestionHeaderDescription && (
-        <HTML source={{html: QuestionHeaderDescription}} />
-      )}
-
-      {/* {!!qCode && <Text style={styles.text}>{qCode} - </Text>}
-      <Text style={styles.text}>{QuestionsText}</Text> */}
+      {!!qHeaderDesc && <HTML source={{html: qHeaderDesc}} />}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 18,
-    color: 'black',
-  },
-  controlContainer: {
-    marginBottom: 16,
-  },
-});
 
 export default TextComponent;

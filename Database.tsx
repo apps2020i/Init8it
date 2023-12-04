@@ -1,5 +1,4 @@
 import SQLite from 'react-native-sqlite-storage';
-import {setBusinessList} from './src/redux/app/appSlice';
 
 let db = SQLite.openDatabase({name: 'In8it.db'});
 SQLite.enablePromise(true);

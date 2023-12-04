@@ -1,53 +1,41 @@
 import {StyleSheet} from 'react-native';
 import {useMemo} from 'react';
+import {useResponsiveScreen} from '../../../hooks';
 
-export const useLoginStyle = () => {
+export const useHomeStyle = () => {
+  const {hp, wp} = useResponsiveScreen();
   const styles = useMemo(() => {
     return StyleSheet.create({
       container: {
         flex: 1,
+        backgroundColor: '#f2f2f2',
+      },
+      hit: {fontSize: 22, color: 'white'},
+      dummyBtn: {
+        position: 'absolute',
+        top: 120,
+        right: 20,
+        height: 60,
+        width: 60,
         alignItems: 'center',
+        borderRadius: 100,
+        backgroundColor: 'red',
         justifyContent: 'center',
-        padding: 16,
+        zIndex: 999,
       },
-      text: {
-        fontSize: 16,
-        marginBottom: 8,
+      touch: {
+        backgroundColor: '#fff',
+        padding: hp(20),
+        marginVertical: hp(8),
+        marginHorizontal: wp(16),
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 5,
       },
-      textInput: {
-        width: '100%',
-        height: 40,
-        borderWidth: 1,
-        borderColor: 'gray',
-        marginBottom: 8,
-        paddingHorizontal: 8,
-      },
-      image: {
-        width: 200,
-        height: 200,
-        marginBottom: 8,
-      },
-      checkbox: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 8,
-      },
-      inputIOS: {
-        width: '100%',
-        height: 40,
-        borderWidth: 1,
-        borderColor: 'gray',
-        marginBottom: 8,
-        paddingHorizontal: 8,
-      },
-      inputAndroid: {
-        width: '100%',
-        height: 40,
-        borderWidth: 1,
-        borderColor: 'gray',
-        marginBottom: 8,
-        paddingHorizontal: 8,
-      },
+      secName: {fontSize: 16, fontWeight: 'bold'},
     });
   }, []);
 
