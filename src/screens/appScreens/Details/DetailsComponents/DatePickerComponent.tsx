@@ -16,7 +16,7 @@ interface DatePickerComponentProps {
   name: string;
   onTimeChange?: (time: Date) => void;
   mode: 'date' | 'datetime';
-  answer: string;
+  Answer: string;
   ControlID: number;
   control: any;
 }
@@ -25,7 +25,7 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
   onDateChange,
   onTimeChange,
   mode,
-  answer,
+  Answer,
   name,
   ControlID,
   control,

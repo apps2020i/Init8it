@@ -3,13 +3,13 @@ import {View, Text, TextInputProps} from 'react-native';
 import HTML from 'react-native-render-html';
 import AppText from '../../../../components/text/AppText';
 import {useTextComponentStyle} from './TextComponentStyle';
+import {Question} from '../DataModal';
 
 interface TextComponentProps extends TextInputProps {
-  item: object;
+  item: Question;
 }
 const TextComponent: React.FC<TextComponentProps> = ({item}) => {
   const styles = useTextComponentStyle();
-  console.log('qtestshowiong', item);
   const qCode = item?.QuestionsCode;
   const qText = item?.QuestionsText;
   const qLabel = item?.QuestionLabel;

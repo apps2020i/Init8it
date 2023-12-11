@@ -67,7 +67,7 @@ const AppTextInput = ({
   const styles = useAppTextInputStyle({leftIcon, editable: rest?.editable});
   const {colors} = useTheme();
   const [isFocused, setIsFocused] = useState(false);
-
+  console.log('ererererrerer', error);
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(
     type === 'password',
   );

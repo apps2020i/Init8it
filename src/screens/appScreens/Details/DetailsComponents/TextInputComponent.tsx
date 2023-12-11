@@ -8,7 +8,7 @@ interface TextInputComponentProps extends TextInputProps {
   control: any;
   name: string;
   label: string;
-  answer: string;
+  Answer: string;
   ControlID: number;
   onChangeText: (text: string) => void;
 }
@@ -27,10 +27,10 @@ const TextInputComponent: React.FC<TextInputComponentProps> = ({
   name,
   label,
   ControlID,
-  answer,
+  Answer,
   onChangeText,
 }) => {
-  console.log('Answeris', answer);
+  console.log('Answeris', Answer);
   const styles = useTextInputComponentStyle();
   return (
     <Controller
@@ -41,11 +41,13 @@ const TextInputComponent: React.FC<TextInputComponentProps> = ({
         <AppTextInput
           style={ControlID === 4 ? styles.textArea : styles.inputStyle}
           placeholderTextColor={'#aaa'}
-          defaultValue={answer}
-          placeholder={answer ? answer : 'enter something..'}
+          // value={value}
+          defaultValue={Answer}
+          placeholder={Answer ? Answer : 'enter something..'}
           multiline={ControlID === 4}
           numberOfLines={ControlID === 4 ? 2 : 1}
           onBlur={onBlur}
+          // onChange={onChange}
           onChangeText={onChange}
           error={error?.message}
           autoCorrect={false}

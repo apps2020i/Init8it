@@ -8,6 +8,7 @@ import {doIfOnline} from '../../../helpers/utils';
 import Header from '../../../components/header/Header';
 import {navigate} from '../../../navigation/rootNavigation';
 import {useHomeStyle} from './styles';
+import Database from './../../../../JsonResp';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,11 +20,14 @@ const Home = () => {
   const sectionList = reduxBusinessList[0]?.Sections;
 
   useEffect(() => {
-    const fetchData = async () => {
-      await apisLocalMathods();
-    };
-    fetchData();
+    dispatch(setBusinessList(Database));
   }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await apisLocalMathods();
+  //   };
+  //   fetchData();
+  // }, []);
 
   const callLocalDatas = async () => {
     const data = await getAllData('businessList');

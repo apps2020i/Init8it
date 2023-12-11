@@ -1,6 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, FlatList} from 'react-native';
-import {useForm} from 'react-hook-form';
+import {
+  useForm,
+  SubmitHandler,
+  useController,
+  UseFormReturn,
+} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import validationSchema from './DetailsComponents/validationSchema';
 import RenderItems from './DetailsComponents/RenderItems';
@@ -24,60 +29,67 @@ const Details: React.FC<DetailsProps> = () => {
 
   const [questions, setQuestions] = useState(question);
 
-  const handleTextInputChange = async (text: string, index: number) => {
-    setQuestions((prevQuestions: any[]) =>
-      prevQuestions.map((question, i) =>
-        i === index
-          ? {...question, Answer: text} // Update the specific key
-          : question,
-      ),
-    );
-
-    console.log('question is updateing', questions);
-  };
-
-  const handleTimeChange = (time: Date, index: number) => {
-    const updatedFormValues = [...formValues];
-    updatedFormValues[index].time = time;
-    // setFormValues(updatedFormValues);
-  };
-
-  const handleDateChange = (date: Date, index: number) => {
-    const updatedFormValues = [...formValues];
-    updatedFormValues[index].date = date;
-    setFormValues(updatedFormValues);
-  };
-
   const {
-    handleSubmit,
     control,
-    getValues,
-    formState: {},
+    handleSubmit,
+    formState: {errors},
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      answers: questions.map(item => {
+      Answers: questions.map(item => {
+        console.log('show me the queas', question);
+
         return {
-          answer: item.Answer,
+          Answer:
+            item.ControlID === 10
+              ? item.Answer.split('|').map((url, index) => ({
+                  id: index + 1,
+                  url,
+                }))
+              : item.Answer,
           QuestionsID: item.QuestionsID,
+          ControlID: item.ControlID,
         };
       }),
     },
   });
 
-  const onSubmit = () => {
-    const {answers} = getValues();
-    console.log('answersare', answers);
-    dispatch(setBusinessList(answers));
+  const onSubmit: SubmitHandler<UseFormReturn> = data => {
+    console.log('Form data:', data);
+
+    if (Object.keys(errors).length === 0) {
+      console.log('Answers are', data.Answers);
+
+      const updatedAnswers = data.Answers.map(Answer => {
+        const {QuestionsID, Answer: selectedDocuments} = Answer;
+
+        const updatedDocuments = Array.isArray(selectedDocuments)
+          ? selectedDocuments.map(
+              (document: {id: number; url: string}) => document.url,
+            )
+          : [selectedDocuments];
+
+        return {
+          QuestionsID,
+          Answer: updatedDocuments.join('|'),
+        };
+      });
+
+      console.log('updatedAnswers====', updatedAnswers);
+      dispatch(setBusinessList(updatedAnswers));
+    } else {
+      console.log('Validation error: At least one document is required');
+    }
   };
+
   const renderItem = ({item, index}: {item: any; index: number}) => (
     <RenderItems
-      // onTextInputChange={value => handleTextInputChange(value, index)}
-      // onDateChange={dateString => handleDateChange(dateString, index)}
-      // onTimeChange={timeString => handleTimeChange(timeString, index)}
       index={index}
       item={item}
       control={control}
+      onTextInputChange={(value: string) => {
+        console.log('Values==', value);
+      }}
     />
   );
 

@@ -14,26 +14,48 @@ const initialState: appState = {
   businessList: [],
 };
 
+const updateQuestionAnswer = (
+  question: any,
+  actionPayload: { QuestionsID: number; Answer?: string }
+) => {
+  const foundItem = actionPayload.QuestionsID === question.QuestionsID;
+  return {
+    ...question,
+    Answer: foundItem ? actionPayload.Answer || "" : question.Answer,
+  };
+};
+
+const updateSectionQuestions = (section: any, actionPayload: any) => ({
+  ...section,
+  Questions: section.Questions.map((question) =>
+    updateQuestionAnswer(question, actionPayload)
+  ),
+});
+
+const updateSchemeSections = (scheme: any, actionPayload: any) => ({
+  ...scheme,
+  Sections: scheme.Sections.map((section) =>
+    updateSectionQuestions(section, actionPayload)
+  ),
+});
+
 const appSlice = createSlice({
   name: "apps",
   initialState,
   reducers: {
     setBusinessList: (state, action) => {
-      console.log("Redux Business List", action?.payload, state.businessList);
-
       const data = Database;
-
+      console.log("asfsaldfsdkdsf", action.payload);
       const updatedData = data.map((scheme) => {
         const updatedSections = scheme.Sections.map((section) => {
           const updatedQuestions = section.Questions.map((question) => {
-            const foundItem = action?.payload.find(
-              (dataItem: { QuestionsID: number }) =>
-                dataItem.QuestionsID === question.QuestionsID
+            const foundItem = action.payload.find(
+              (dataItem) => dataItem.QuestionsID === question.QuestionsID
             );
-
+            console.log("foundItem=-=", foundItem);
             return {
               ...question,
-              Answer: foundItem ? foundItem.answer : question.Answer,
+              Answer: foundItem?.Answer ?? question.Answer,
             };
           });
 
@@ -49,8 +71,8 @@ const appSlice = createSlice({
         };
       });
 
-      updatedData.map((item) => {
-        console.log("Ites are showingg", item.Sections[0]?.Questions);
+      updatedData.forEach((item) => {
+        console.log("Items are showing", item.Sections[0]?.Questions);
       });
 
       state.businessList = updatedData;

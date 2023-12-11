@@ -1,13 +1,9 @@
-import {PressableStateCallbackType, StyleSheet} from 'react-native';
-// import {useResponsiveScreen, useTheme} from '../../hooks';
-// import {SHADOW} from '../../styles';
-import {ReactNode, useMemo} from 'react';
-// import {DEFAULT_COLORS} from '../../styles';
-import {useResponsiveScreen, useTheme} from '../../../../hooks';
+import {StyleSheet} from 'react-native';
+import {useMemo} from 'react';
+import {useResponsiveScreen} from '../../../../hooks';
 
 export const useTextComponentStyle = () => {
-  const {colors} = useTheme();
-  const {wp, hp} = useResponsiveScreen();
+  const {hp} = useResponsiveScreen();
   const styles = useMemo(() => {
     return StyleSheet.create({
       qCode: {fontSize: 18, color: 'black', fontWeight: '500'},

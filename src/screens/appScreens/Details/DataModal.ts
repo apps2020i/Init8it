@@ -1,13 +1,14 @@
 interface ControlOption {
   IdQuestionControlOption: number;
   ControlItemName: string;
-  ControlItemConditionValue: any; // You might want to replace 'any' with the actual type
+  ControlItemConditionValue: any;
   IdQuestionDependent: number;
   ControlItemSortOrder: number;
-  ControlResultCriteria: any; // Replace 'any' with the actual type if possible
+  ControlResultCriteria: any;
 }
 
 export interface Question {
+  ControlOption: ControlOption[];
   QuestionsID: number;
   QuestionsIDParent: number;
   QuestionsCode: string | null;
